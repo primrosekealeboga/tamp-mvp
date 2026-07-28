@@ -1,60 +1,15 @@
 import { useState } from "react";
+import { useTAMP } from "../../context/TAMPContext";
 
 function Matchmaking() {
-  const [loads] = useState([
-    {
-      id: 1,
-      pickup: "Johannesburg",
-      destination: "Durban",
-      cargoType: "Steel",
-      weight: 20,
-      truckType: "Flatbed",
-    },
-    {
-      id: 2,
-      pickup: "Pretoria",
-      destination: "Cape Town",
-      cargoType: "Food",
-      weight: 12,
-      truckType: "Refrigerated",
-    },
-  ]);
-
-  const [trucks] = useState([
-    {
-      id: 1,
-      registrationNumber: "AB 12 CD GP",
-      driverName: "John Smith",
-      truckType: "Flatbed",
-      capacity: 25,
-      currentLocation: "Johannesburg",
-      destination: "Durban",
-      status: "Available",
-    },
-    {
-      id: 2,
-      registrationNumber: "XY 45 ZZ GP",
-      driverName: "Sarah Molefe",
-      truckType: "Refrigerated",
-      capacity: 15,
-      currentLocation: "Pretoria",
-      destination: "Cape Town",
-      status: "Available",
-    },
-    {
-      id: 3,
-      registrationNumber: "LM 78 OP GP",
-      driverName: "Peter Dube",
-      truckType: "Flatbed",
-      capacity: 10,
-      currentLocation: "Johannesburg",
-      destination: "Durban",
-      status: "Available",
-    },
-  ]);
+  const {
+    loads,
+    trucks,
+    matchDecisions,
+    handleMatchDecision,
+  } = useTAMP();
 
   const [selectedLoadId, setSelectedLoadId] = useState("");
-  const [matchDecisions, setMatchDecisions] = useState({});
 
   const selectedLoad = loads.find(
     (load) => load.id === Number(selectedLoadId)
@@ -75,23 +30,6 @@ function Matchmaking() {
       })
     : [];
 
-  const handleDecision = (truckId, decision) => {
-    setMatchDecisions((previousDecisions) => {
-      if (decision === null) {
-        const updatedDecisions = { ...previousDecisions };
-
-        delete updatedDecisions[truckId];
-
-        return updatedDecisions;
-      }
-
-      return {
-        ...previousDecisions,
-        [truckId]: decision,
-      };
-    });
-  };
-
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       <div className="mx-auto max-w-5xl">
@@ -111,7 +49,9 @@ function Matchmaking() {
 
             <select
               value={selectedLoadId}
-              onChange={(e) => setSelectedLoadId(e.target.value)}
+              onChange={(event) =>
+                setSelectedLoadId(event.target.value)
+              }
               className="w-full rounded-lg border p-3"
             >
               <option value="">Choose a load</option>
@@ -137,7 +77,8 @@ function Matchmaking() {
                 <p className="text-sm text-gray-500">Route</p>
 
                 <p className="font-semibold">
-                  {selectedLoad.pickup} → {selectedLoad.destination}
+                  {selectedLoad.pickup} →{" "}
+                  {selectedLoad.destination}
                 </p>
               </div>
 
@@ -183,7 +124,10 @@ function Matchmaking() {
             ) : (
               <div className="mt-4 grid grid-cols-1 gap-5 md:grid-cols-2">
                 {matchingTrucks.map((truck) => {
-                  const decision = matchDecisions[truck.id];
+                  const decisionKey = `${selectedLoad.id}-${truck.id}`;
+
+                  const decision =
+                    matchDecisions[decisionKey];
 
                   return (
                     <div
@@ -226,11 +170,17 @@ function Matchmaking() {
                           <strong>Destination:</strong>{" "}
                           {truck.destination}
                         </p>
+
+                        <p>
+                          <strong>Status:</strong>{" "}
+                          {truck.status}
+                        </p>
                       </div>
 
                       <div className="mt-5 rounded-lg bg-blue-50 p-4 text-sm text-blue-800">
-                        Recommended because the truck type, capacity,
-                        current location and destination match the load.
+                        Recommended because the truck type,
+                        capacity, current location and destination
+                        match the selected load.
                       </div>
 
                       {decision ? (
@@ -248,7 +198,11 @@ function Matchmaking() {
                           <button
                             type="button"
                             onClick={() =>
-                              handleDecision(truck.id, null)
+                              handleMatchDecision(
+                                selectedLoad.id,
+                                truck.id,
+                                null
+                              )
                             }
                             className="mt-3 w-full rounded-lg border border-gray-300 py-2 font-medium text-gray-700 hover:bg-gray-100"
                           >
@@ -260,7 +214,8 @@ function Matchmaking() {
                           <button
                             type="button"
                             onClick={() =>
-                              handleDecision(
+                              handleMatchDecision(
+                                selectedLoad.id,
                                 truck.id,
                                 "Accepted"
                               )
@@ -273,7 +228,8 @@ function Matchmaking() {
                           <button
                             type="button"
                             onClick={() =>
-                              handleDecision(
+                              handleMatchDecision(
+                                selectedLoad.id,
                                 truck.id,
                                 "Rejected"
                               )
