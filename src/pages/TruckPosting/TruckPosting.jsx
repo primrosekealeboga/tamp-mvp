@@ -7,6 +7,8 @@ function TruckPosting() {
     capacity: "",
     currentLocation: "",
     availableDate: "",
+    driverName: "",
+    destination: "",
   });
 
   const [trucks, setTrucks] = useState([]);
@@ -17,6 +19,8 @@ function TruckPosting() {
       !truckData.truckType.trim() ||
       !truckData.capacity ||
       !truckData.currentLocation.trim() ||
+      !truckData.driverName.trim() ||
+      !truckData.destination.trim() ||
       !truckData.availableDate
     ) {
       alert("Please complete all truck details.");
@@ -39,6 +43,8 @@ function TruckPosting() {
       capacity: "",
       currentLocation: "",
       availableDate: "",
+      driverName: "",
+      destination: "",
     });
   };
 
@@ -154,6 +160,44 @@ function TruckPosting() {
                 className="w-full rounded-lg border p-3"
               />
             </div>
+
+            <div>
+               <label className="mb-2 block font-medium">
+               Driver Name
+           </label>
+
+         <input
+              type="text"
+              placeholder="Enter driver name"
+              value={truckData.driverName}
+              onChange={(e) =>
+              setTruckData({
+              ...truckData,
+             driverName: e.target.value,
+         })
+      }
+           className="w-full rounded-lg border p-3"
+  />
+           </div>
+
+           <div>
+  <label className="mb-2 block font-medium">
+    Destination
+  </label>
+
+  <input
+    type="text"
+    placeholder="Enter destination"
+    value={truckData.destination}
+    onChange={(e) =>
+      setTruckData({
+        ...truckData,
+        destination: e.target.value,
+      })
+    }
+    className="w-full rounded-lg border p-3"
+  />
+</div>
           </div>
 
           <button
