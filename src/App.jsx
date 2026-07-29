@@ -7,6 +7,7 @@ import LoadPosting from "./pages/LoadPosting/LoadPosting";
 import TruckPosting from "./pages/TruckPosting/TruckPosting";
 import Matchmaking from "./pages/Matchmaking/Matchmaking";
 import Tracking from "./Pages/Tracking/Tracking";
+import AdminConsole from "./Pages/AdminConsole/AdminConsole";
 
 function App() {
   return (
@@ -18,22 +19,13 @@ function App() {
         <Route path="/trucks" element={<TruckPosting />} />
         <Route path="/matching" element={<Matchmaking />} />
         <Route path="/tracking" element={<Tracking />} />
+        
        
-       {/* Temporary Admin Page */}
+       {/* Admin Page */}
         <Route
-    path="/admin"
-    element={
-      <div className="min-h-screen bg-slate-100 p-10">
-        <h1 className="text-3xl font-bold">
-          Admin Console
-        </h1>
-
-        <p className="mt-2 text-gray-600">
-          The TAMP administration workspace is under development.
-        </p>
-      </div>
-    }
-  /> 
+         path="/admin"
+         element={<AdminConsole />}
+     />
       </Routes>
     </BrowserRouter>
   );

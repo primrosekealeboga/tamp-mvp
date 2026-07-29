@@ -11,7 +11,7 @@ import {
   XCircle,
 } from "lucide-react";
 
-import Sidebar from "../Components/Sidebar";
+import Sidebar from "../../Components/Sidebar";
 
 function AdminConsole() {
   const [searchTerm, setSearchTerm] = useState("");
