@@ -469,7 +469,7 @@ function LoadPosting() {
                     htmlFor="weight"
                     className="mb-2 block text-sm font-semibold text-slate-700"
                   >
-                    Weight in Tons
+                    Weight in tons
                   </label>
 
                   <div className="relative">
